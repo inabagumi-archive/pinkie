@@ -2,6 +2,7 @@ package main // import "github.com/inabagumi/ytc"
 
 import (
 	"flag"
+	"html"
 	"log"
 	"net/http"
 	"os"
@@ -62,6 +63,7 @@ func normalizeTitle(title string) string {
 
 	title = re.ReplaceAllString(title, " ")
 	title = strings.TrimSpace(title)
+	title = html.UnescapeString(title)
 
 	return title
 }
@@ -101,7 +103,7 @@ func getVideosByChannelID(service *youtube.Service, channelID string, all bool) 
 			results = append(results, video)
 		}
 
-		if !all {
+		if !all || len(response.Items) < 1 {
 			break
 		}
 
