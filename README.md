@@ -1,5 +1,11 @@
 # ytc
 
+## Installation
+
+```console
+$ go get -u github.com/inabagumi/ytc
+```
+
 ## Usage
 
 ```console
