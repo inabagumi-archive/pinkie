@@ -3,7 +3,9 @@
 ## Installation
 
 ```console
-$ go get -u github.com/inabagumi/ytc
+$ cd $(mktemp -d)
+$ curl -sSL https://github.com/inabagumi/ytc/releases/download/v1.0.0/ytc_1.0.0_Linux_x86_64.tar.gz | tar xzf -
+$ sudo cp ytc /usr/local/bin
 ```
 
 ## Usage
@@ -13,7 +15,7 @@ $ export GOOGLE_API_KEY=xxxxx
 $ export ALGOLIA_APPLICATION_ID=xxxxx
 $ export ALGOLIA_API_KEY=xxxxx
 $ export ALGOLIA_INDEX_NAME=xxxxx
-$ $(go env GOPATH)/bin/ytc -channel UC0Owc36U9lOyi9Gx9Ic-4qg
+$ ytc -channel UC0Owc36U9lOyi9Gx9Ic-4qg
 ```
 
 ## LICENSE
