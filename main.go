@@ -2,6 +2,7 @@ package main // import "github.com/inabagumi/ytc"
 
 import (
 	"flag"
+	"fmt"
 	"html"
 	"log"
 	"net/http"
@@ -14,6 +15,26 @@ import (
 	"google.golang.org/api/googleapi/transport"
 	"google.golang.org/api/youtube/v3"
 )
+
+type channelList []string
+
+func (i *channelList) String() string {
+	return fmt.Sprint(*i)
+}
+
+func (i *channelList) Set(value string) error {
+	*i = append(*i, value)
+
+	return nil
+}
+
+var all bool
+var channels channelList
+
+func init() {
+	flag.BoolVar(&all, "all", false, "Default: false.")
+	flag.Var(&channels, "channel", "Set the index target channel.")
+}
 
 // A Channel represents the channel of YouTube.
 type Channel struct {
@@ -31,10 +52,6 @@ type Video struct {
 	Title       string   `json:"title"`
 	URL         string   `json:"url"`
 }
-
-var (
-	all = flag.Bool("all", false, "Default: false.")
-)
 
 func search(service *youtube.Service, channelID string, publishedBefore time.Time, pageToken string) (*youtube.SearchListResponse, error) {
 	publishedAfter := publishedBefore.AddDate(0, 0, -60)
@@ -120,20 +137,6 @@ func getVideosByChannelID(service *youtube.Service, channelID string, all bool) 
 func main() {
 	flag.Parse()
 
-	channels := []string{
-		// 因幡はねる
-		"UC0Owc36U9lOyi9Gx9Ic-4qg",
-
-		// 宇森ひなこ
-		"UChqYnJlFxlBi6DfRz6jRenQ",
-
-		// 宗谷いちか
-		"UC2kyQhzGOB-JPgcQX9OMgEw",
-
-		// 日ノ隈らん
-		"UCRvpMpzAXBRKJQuk-8-Sdvg",
-	}
-
 	client := &http.Client{
 		Transport: &transport.APIKey{Key: os.Getenv("GOOGLE_API_KEY")},
 	}
@@ -145,7 +148,7 @@ func main() {
 
 	var results []*Video
 	for _, channelID := range channels {
-		for _, video := range getVideosByChannelID(service, channelID, *all) {
+		for _, video := range getVideosByChannelID(service, channelID, all) {
 			results = append(results, video)
 		}
 	}
