@@ -28,8 +28,10 @@ func (i *channelList) Set(value string) error {
 	return nil
 }
 
-var all bool
-var channels channelList
+var (
+	all      bool
+	channels channelList
+)
 
 func init() {
 	flag.BoolVar(&all, "all", false, "Default: false.")
@@ -156,8 +158,15 @@ func main() {
 	searchClient := algolia.NewClient(os.Getenv("ALGOLIA_APPLICATION_ID"), os.Getenv("ALGOLIA_API_KEY"))
 	index := searchClient.InitIndex(os.Getenv("ALGOLIA_INDEX_NAME"))
 
-	_, err = index.SaveObjects(results)
+	res, err := index.SaveObjects(results)
 	if err != nil {
 		log.Fatalf("Error indexing results: %v", err)
 	}
+
+	count := 0
+	for _, batch := range res.Responses {
+		count += len(batch.ObjectIDs)
+	}
+
+	log.Printf("Successfully indexed %d videos.", count)
 }
