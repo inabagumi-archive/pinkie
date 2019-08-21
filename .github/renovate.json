@@ -1,3 +1,6 @@
 {
-  "extends": ["@inabagumi"]
+  "extends": ["@inabagumi"],
+  "ignoreDeps": [
+    "github.com/algolia/algoliasearch-client-go"
+  ]
 }
