@@ -5,6 +5,9 @@ cloud.google.com/go v0.38.0/go.mod h1:990N+gfupTy94rShfmMCWGDn0LpTmnzTp2qbd1dvSR
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/algolia/algoliasearch-client-go v0.0.0-20190708092936-b506e86cf5a8 h1:0EXHPkk1vsUH5CKcwo/aPRdou7W3/7uk2/6g/WIcThw=
 github.com/algolia/algoliasearch-client-go v0.0.0-20190708092936-b506e86cf5a8/go.mod h1:expjYHk/4/gubqaK79eehBPQFb+fCP93qQ5VgQmegmU=
+github.com/algolia/algoliasearch-client-go v0.0.0-20190820203211-e9b8596a7351 h1:8OFBFzoR9BlQ8X7Jjqpu5YYEl78PXkmCyUDvcUmHNGs=
+github.com/algolia/algoliasearch-client-go v0.0.0-20190820203211-e9b8596a7351/go.mod h1:expjYHk/4/gubqaK79eehBPQFb+fCP93qQ5VgQmegmU=
+github.com/algolia/algoliasearch-client-go v2.25.0+incompatible h1:FGQr9l++u4uQPDXrW8jM5kNJm3Iw5SxEJJtYXSFmPRY=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
