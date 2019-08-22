@@ -4,7 +4,7 @@
 
 ```console
 $ cd $(mktemp -d)
-$ curl -sSL https://github.com/inabagumi/ytc/releases/download/v1.1.0/ytc_1.1.0_Linux_x86_64.tar.gz | tar xzf -
+$ curl -sSL https://github.com/inabagumi/ytc/releases/download/v1.2.0/ytc_1.2.0_Linux_x86_64.tar.gz | tar xzf -
 $ sudo cp ytc /usr/local/bin
 ```
 
