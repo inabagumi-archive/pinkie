@@ -16,6 +16,8 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
+var version = "dev"
+
 type channelList []string
 
 func (i *channelList) String() string {
@@ -29,13 +31,15 @@ func (i *channelList) Set(value string) error {
 }
 
 var (
-	all      bool
-	channels channelList
+	all          bool
+	channels     channelList
+	printVersion bool
 )
 
 func init() {
-	flag.BoolVar(&all, "all", false, "Default: false.")
+	flag.BoolVar(&all, "all", false, "Also index videos older than 60 days. Default: false.")
 	flag.Var(&channels, "channel", "Set the index target channel.")
+	flag.BoolVar(&printVersion, "version", false, "Print the version number.")
 }
 
 // A Channel represents the channel of YouTube.
@@ -138,6 +142,11 @@ func getVideosByChannelID(service *youtube.Service, channelID string, all bool) 
 
 func main() {
 	flag.Parse()
+
+	if printVersion {
+		fmt.Printf("%s version %s\n", os.Args[0], version)
+		os.Exit(0)
+	}
 
 	client := &http.Client{
 		Transport: &transport.APIKey{Key: os.Getenv("GOOGLE_API_KEY")},
