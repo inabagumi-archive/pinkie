@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/inabagumi/ytc/cli"
+	"github.com/inabagumi/ytc/v2/cli"
 )
 
 var version = "dev"

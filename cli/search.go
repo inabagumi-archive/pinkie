@@ -3,7 +3,7 @@ package cli
 import (
 	"time"
 
-	"github.com/inabagumi/ytc/internal/util"
+	"github.com/inabagumi/ytc/v2/internal/util"
 	"google.golang.org/api/youtube/v3"
 )
 
