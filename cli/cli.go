@@ -1,4 +1,4 @@
-package cli
+package cli // import "github.com/inabagumi/ytc/v2/cli"
 
 import (
 	"flag"
