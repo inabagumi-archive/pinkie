@@ -1,4 +1,4 @@
-package main
+package main // import "github.com/inabagumi/ytc/v2/cmd/ytc"
 
 import (
 	"log"

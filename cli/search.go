@@ -1,4 +1,4 @@
-package cli
+package cli // import "github.com/inabagumi/ytc/v2/cli"
 
 import (
 	"time"
@@ -11,7 +11,7 @@ func search(service *youtube.Service, channelID string, publishedBefore time.Tim
 	publishedAfter := publishedBefore.AddDate(0, 0, -60)
 
 	call := service.Search.
-		List("id,snippet").
+		List("id").
 		ChannelId(channelID).
 		MaxResults(50).
 		Order("date").
@@ -21,12 +21,12 @@ func search(service *youtube.Service, channelID string, publishedBefore time.Tim
 		SafeSearch("none").
 		Type("video")
 
-	response, err := call.Do()
+	res, err := call.Do()
 	if err != nil {
 		return nil, err
 	}
 
-	return response, nil
+	return res, nil
 }
 
 func getVideosByChannelID(service *youtube.Service, channelID string, all bool) []*Video {
@@ -35,15 +35,45 @@ func getVideosByChannelID(service *youtube.Service, channelID string, all bool) 
 
 	var results []*Video
 	for {
-		response, err := search(service, channelID, date, pageToken)
+		searchRes, err := search(service, channelID, date, pageToken)
 		if err != nil {
 			break
 		}
 
-		for _, item := range response.Items {
+		var ids string
+
+		for i, item := range searchRes.Items {
+			ids += item.Id.VideoId
+			if i != len(searchRes.Items)-1 {
+				ids += ","
+			}
+		}
+
+		call := service.Videos.
+			List("liveStreamingDetails,snippet").
+			Id(ids).
+			MaxResults(50)
+
+		res, err := call.Do()
+		if err != nil {
+			break
+		}
+
+		for _, item := range res.Items {
 			channelID := item.Snippet.ChannelId
-			videoID := item.Id.VideoId
-			publishedAt, err := time.Parse(time.RFC3339, item.Snippet.PublishedAt)
+			videoID := item.Id
+
+			rawPublishedAt := item.Snippet.PublishedAt
+
+			if item.LiveStreamingDetails != nil {
+				if item.LiveStreamingDetails.ActualStartTime != "" {
+					rawPublishedAt = item.LiveStreamingDetails.ActualStartTime
+				} else if item.LiveStreamingDetails.ScheduledStartTime != "" {
+					rawPublishedAt = item.LiveStreamingDetails.ScheduledStartTime
+				}
+			}
+
+			publishedAt, err := time.Parse(time.RFC3339, rawPublishedAt)
 			if err != nil {
 				publishedAt = time.Now()
 			}
@@ -64,11 +94,11 @@ func getVideosByChannelID(service *youtube.Service, channelID string, all bool) 
 			results = append(results, video)
 		}
 
-		if !all || len(response.Items) < 1 {
+		if !all || len(res.Items) < 1 {
 			break
 		}
 
-		pageToken = response.NextPageToken
+		pageToken = searchRes.NextPageToken
 
 		if pageToken != "" {
 			date = date.AddDate(0, 0, -61)
