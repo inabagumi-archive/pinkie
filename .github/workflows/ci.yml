@@ -33,7 +33,7 @@ jobs:
     - name: Build
       env:
         GO111MODULE: on
-      run: go build -o bin/ytc ./cmd/ytc/main.go
+      run: go build -o bin/pinkie ./cmd/pinkie/main.go
 
     - name: Test
       env:
