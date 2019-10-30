@@ -4,8 +4,8 @@ before:
   hooks:
   - go mod download
 builds:
-- main: ./cmd/ytc/main.go
-  binary: ytc
+- main: ./cmd/pinkie/main.go
+  binary: pinkie
   env:
   - CGO_ENABLED=0
   goos:

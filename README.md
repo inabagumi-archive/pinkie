@@ -1,11 +1,11 @@
-# ytc
+# Pinkie
 
 ## Installation
 
 ```console
 $ cd $(mktemp -d)
-$ curl -sSL https://github.com/inabagumi/ytc/releases/download/v2.2.1/ytc_2.2.1_Linux_x86_64.tar.gz | tar xzf -
-$ sudo cp ytc /usr/local/bin
+$ curl -sSL https://github.com/inabagumi/pinkie/releases/download/v3.0.0/ytc_3.0.0_Linux_x86_64.tar.gz | tar xzf -
+$ sudo install pinkie /usr/local/bin
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ $ export GOOGLE_API_KEY=xxxxx
 $ export ALGOLIA_APPLICATION_ID=xxxxx
 $ export ALGOLIA_API_KEY=xxxxx
 $ export ALGOLIA_INDEX_NAME=xxxxx
-$ ytc -channel UC0Owc36U9lOyi9Gx9Ic-4qg
+$ pinkie -channel UC0Owc36U9lOyi9Gx9Ic-4qg
 ```
 
 ## LICENSE
