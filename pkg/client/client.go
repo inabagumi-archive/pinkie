@@ -33,6 +33,7 @@ func New(opts *Options) (*client, error) {
 
 	c := &client{
 		algoliaClient:  algoliaClient,
+		indexName:      opts.AlgoliaIndexName,
 		youtubeService: youtubeService,
 	}
 
