@@ -1,4 +1,4 @@
-package util
+package util // import "github.com/inabagumi/ytc/v2/internal/util"
 
 import (
 	"html"

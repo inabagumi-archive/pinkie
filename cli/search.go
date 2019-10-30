@@ -1,6 +1,7 @@
 package cli // import "github.com/inabagumi/ytc/v2/cli"
 
 import (
+	"log"
 	"time"
 
 	"github.com/inabagumi/ytc/v2/internal/util"
@@ -35,8 +36,11 @@ func getVideosByChannelID(service *youtube.Service, channelID string, all bool) 
 
 	var results []*Video
 	for {
+		log.Printf("channel_id: %s, published_before: %s, page_token: %s\n", channelID, date.Format(time.RFC3339), pageToken)
+
 		searchRes, err := search(service, channelID, date, pageToken)
 		if err != nil {
+			log.Println(err)
 			break
 		}
 
@@ -94,7 +98,7 @@ func getVideosByChannelID(service *youtube.Service, channelID string, all bool) 
 			results = append(results, video)
 		}
 
-		if !all || len(res.Items) < 1 {
+		if !all || (pageToken == "" && len(searchRes.Items) < 1) {
 			break
 		}
 
