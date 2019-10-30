@@ -16,28 +16,22 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Go 1.12
+    - name: Set up Go 1.13
       uses: actions/setup-go@v1
       with:
-        go-version: 1.12
+        go-version: 1.13
       id: go
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
 
     - name: Get dependencies
-      env:
-        GO111MODULE: on
       run: go mod download
 
     - name: Build
-      env:
-        GO111MODULE: on
-      run: go build -o bin/pinkie ./cmd/pinkie/main.go
+      run: make
 
     - name: Test
-      env:
-        GO111MODULE: on
       run: go test ./...
 
     - name: Release
