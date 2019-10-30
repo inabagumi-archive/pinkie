@@ -104,7 +104,7 @@ func getVideosByChannelID(service *youtube.Service, channelID string, all bool) 
 
 		pageToken = searchRes.NextPageToken
 
-		if pageToken != "" {
+		if pageToken == "" {
 			date = date.AddDate(0, 0, -61)
 		}
 	}
