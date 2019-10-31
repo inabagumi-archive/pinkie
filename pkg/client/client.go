@@ -1,17 +1,18 @@
 package client
 
 import (
-	"context"
+	"time"
 
 	algolia "github.com/algolia/algoliasearch-client-go/algolia/search"
+	"github.com/inabagumi/pinkie/pkg/scraper"
 	"google.golang.org/api/option"
-	"google.golang.org/api/youtube/v3"
 )
 
-type client struct {
-	algoliaClient  *algolia.Client
-	indexName      string
-	youtubeService *youtube.Service
+type Client struct {
+	IndexName string
+	Scraper   *scraper.Scraper
+
+	algoliaClient *algolia.Client
 }
 
 type Options struct {
@@ -21,33 +22,36 @@ type Options struct {
 	GoogleAPIKey         string
 }
 
-func New(opts *Options) (*client, error) {
-	ctx := context.Background()
-
-	youtubeService, err := youtube.NewService(ctx, option.WithAPIKey(opts.GoogleAPIKey))
+func New(opts *Options) (*Client, error) {
+	scraper, err := scraper.New(option.WithAPIKey(opts.GoogleAPIKey))
 	if err != nil {
 		return nil, err
 	}
 
 	algoliaClient := algolia.NewClient(opts.AlgoliaApplicationID, opts.AlgoliaAPIKey)
 
-	c := &client{
-		algoliaClient:  algoliaClient,
-		indexName:      opts.AlgoliaIndexName,
-		youtubeService: youtubeService,
+	c := &Client{
+		IndexName:     opts.AlgoliaIndexName,
+		Scraper:       scraper,
+		algoliaClient: algoliaClient,
 	}
 
 	return c, nil
 }
 
-func (c *client) Crawl(channelID string, all bool) (int, error) {
-	videos := c.Scrape(channelID, all)
+func (c *Client) Crawl(channelID string, all bool) (int, error) {
+	opts := &scraper.ScrapeOptions{
+		All: all,
+		PublishedBefore: time.Now(),
+	}
+
+	videos := c.Scraper.Scrape(channelID, opts)
 
 	if len(videos) < 1 {
 		return 0, nil
 	}
 
-	index := c.algoliaClient.InitIndex(c.indexName)
+	index := c.algoliaClient.InitIndex(c.IndexName)
 
 	res, err := index.SaveObjects(videos)
 	if err != nil {

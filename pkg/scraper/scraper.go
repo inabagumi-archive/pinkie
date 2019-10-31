@@ -1,22 +1,41 @@
-package client
+package scraper
 
 import (
+	"context"
 	"html"
 	"log"
 	"time"
 
+	"google.golang.org/api/option"
 	"google.golang.org/api/youtube/v3"
 )
+
+type Scraper struct {
+	ctx     context.Context
+	service *youtube.Service
+}
+
+func New(opts ...option.ClientOption) (*Scraper, error) {
+	ctx := context.Background()
+	s, err := youtube.NewService(ctx, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	scraper := &Scraper{ctx: ctx, service: s}
+
+	return scraper, nil
+}
 
 type searchOptions struct {
 	pageToken       string
 	publishedBefore time.Time
 }
 
-func (c *client) search(channelID string, opts *searchOptions) (*youtube.SearchListResponse, error) {
+func (s *Scraper) search(channelID string, opts *searchOptions) (*youtube.SearchListResponse, error) {
 	publishedAfter := opts.publishedBefore.AddDate(0, 0, -60)
 
-	call := c.youtubeService.Search.
+	call := s.service.Search.
 		List("id").
 		ChannelId(channelID).
 		MaxResults(50).
@@ -35,7 +54,7 @@ func (c *client) search(channelID string, opts *searchOptions) (*youtube.SearchL
 	return res, nil
 }
 
-func (c *client) getVideoList(ids []string) (*youtube.VideoListResponse, error) {
+func (s *Scraper) getVideoList(ids []string) (*youtube.VideoListResponse, error) {
 	var strIds string
 	for i, id := range ids {
 		strIds += id
@@ -45,7 +64,7 @@ func (c *client) getVideoList(ids []string) (*youtube.VideoListResponse, error) 
 		}
 	}
 
-	call := c.youtubeService.Videos.
+	call := s.service.Videos.
 		List("liveStreamingDetails,snippet").
 		Id(strIds).
 		MaxResults(50)
@@ -73,11 +92,16 @@ type Video struct {
 	URL         string   `json:"url"`
 }
 
-func (c *client) Scrape(channelID string, all bool) []*Video {
+type ScrapeOptions struct {
+	All             bool
+	PublishedBefore time.Time
+}
+
+func (s *Scraper) Scrape(channelID string, opts *ScrapeOptions) []*Video {
 	log.Printf("Scrape https://www.youtube.com/channel/%s", channelID)
 
 	var (
-		date      = time.Now()
+		date      = opts.PublishedBefore
 		pageToken = ""
 		results   []*Video
 	)
@@ -91,7 +115,7 @@ func (c *client) Scrape(channelID string, all bool) []*Video {
 			publishedBefore: date,
 		}
 
-		searchRes, err := c.search(channelID, searchOpts)
+		searchRes, err := s.search(channelID, searchOpts)
 		if err != nil {
 			log.Printf("error: %v", err)
 			break
@@ -102,9 +126,10 @@ func (c *client) Scrape(channelID string, all bool) []*Video {
 			ids = append(ids, item.Id.VideoId)
 		}
 
-		res, err := c.getVideoList(ids)
+		res, err := s.getVideoList(ids)
 		if err != nil {
 			log.Printf("error: %v", err)
+			break
 		}
 
 		for _, item := range res.Items {
@@ -141,7 +166,7 @@ func (c *client) Scrape(channelID string, all bool) []*Video {
 			results = append(results, video)
 		}
 
-		if !all || (pageToken == "" && len(searchRes.Items) < 1) {
+		if !opts.All || (pageToken == "" && len(searchRes.Items) < 1) {
 			break
 		}
 
