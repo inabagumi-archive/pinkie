@@ -1,5 +1,7 @@
 # Pinkie
 
+[![GitHub Actions](https://github.com/inabagumi/pinkie/workflows/Go/badge.svg)](https://github.com/inabagumi/pinkie/actions?query=workflow%3AGo) [![Codecov](https://codecov.io/gh/inabagumi/pinkie/branch/master/graph/badge.svg)](https://codecov.io/gh/inabagumi/pinkie)
+
 ## Installation
 
 ```console
