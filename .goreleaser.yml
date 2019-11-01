@@ -31,5 +31,6 @@ changelog:
   sort: asc
   filters:
     exclude:
-    - '^docs:'
+    - '^docs(?:\([^)]+\))?:'
+    - '^test(?:\([^)]+\))?:'
     - '^v\d+(?:\.\d+){0,2}$'
