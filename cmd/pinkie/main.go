@@ -12,14 +12,14 @@ import (
 var version = "dev"
 
 func main() {
-	app := kingpin.New(filepath.Base(os.Args[0]), "")
+	app := kingpin.New(filepath.Base(os.Args[0]), "The Pinkie is a crawler that uses the YouTube Data API.")
 
 	app.Version(version)
 	app.VersionFlag.Short('v')
 
 	app.HelpFlag.Short('h')
 
-	all := app.Flag("all", "").
+	all := app.Flag("all", "Fetch all videos of channel.").
 		Short('a').
 		Bool()
 
