@@ -17,6 +17,14 @@ builds:
   ignore:
   - goos: darwin
     goarch: 386
+dockers:
+- binaries:
+  - pinkie
+  image_templates:
+  - "inabagumi/{{ .ProjectName }}:latest"
+  - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+  - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
+  dockerfile: Dockerfile
 archives:
 - replacements:
     darwin: Darwin
