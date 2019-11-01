@@ -6,7 +6,7 @@
 
 ```console
 $ cd $(mktemp -d)
-$ curl -sSL https://github.com/inabagumi/pinkie/releases/download/v3.0.4/ytc_3.0.4_Linux_x86_64.tar.gz | tar xzf -
+$ curl -sSL https://github.com/inabagumi/pinkie/releases/download/v3.1.0/ytc_3.1.0_Linux_x86_64.tar.gz | tar xzf -
 $ sudo install pinkie /usr/local/bin
 ```
 
