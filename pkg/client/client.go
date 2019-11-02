@@ -9,10 +9,8 @@ import (
 )
 
 type Client struct {
-	IndexName string
-	Scraper   *scraper.Scraper
-
-	algoliaClient *algolia.Client
+	Index   *algolia.Index
+	Scraper *scraper.Scraper
 }
 
 type Options struct {
@@ -29,39 +27,28 @@ func New(opts *Options) (*Client, error) {
 	}
 
 	algoliaClient := algolia.NewClient(opts.AlgoliaApplicationID, opts.AlgoliaAPIKey)
+	index := algoliaClient.InitIndex(opts.AlgoliaIndexName)
 
 	c := &Client{
-		IndexName:     opts.AlgoliaIndexName,
-		Scraper:       scraper,
-		algoliaClient: algoliaClient,
+		Index:   index,
+		Scraper: scraper,
 	}
 
 	return c, nil
 }
 
-func (c *Client) Crawl(channelID string, all bool) (int, error) {
+func (c *Client) Crawl(channelID string, all bool) (algolia.GroupBatchRes, error) {
 	opts := &scraper.ScrapeOptions{
-		All: all,
+		All:             all,
 		PublishedBefore: time.Now(),
 	}
 
 	videos := c.Scraper.Scrape(channelID, opts)
 
-	if len(videos) < 1 {
-		return 0, nil
-	}
-
-	index := c.algoliaClient.InitIndex(c.IndexName)
-
-	res, err := index.SaveObjects(videos)
+	res, err := c.Index.SaveObjects(videos)
 	if err != nil {
-		return 0, err
+		return algolia.GroupBatchRes{}, err
 	}
 
-	count := 0
-	for _, batch := range res.Responses {
-		count += len(batch.ObjectIDs)
-	}
-
-	return count, nil
+	return res, nil
 }
