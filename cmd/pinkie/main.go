@@ -51,6 +51,8 @@ func main() {
 		wg.Add(1)
 
 		go func(channel string) {
+			defer wg.Done()
+
 			res, err := c.Crawl(channel, *all)
 			if err != nil {
 				log.Printf("error: %v", err)
@@ -59,8 +61,6 @@ func main() {
 			for _, batchRes := range res.Responses {
 				count += len(batchRes.ObjectIDs)
 			}
-
-			wg.Done()
 		}(channel)
 	}
 
