@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync"
 
 	pinkie "github.com/inabagumi/pinkie/pkg/client"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -29,11 +30,7 @@ func main() {
 		PlaceHolder("<id>").
 		Strings()
 
-	_, err := app.Parse(os.Args[1:])
-	if err != nil {
-		app.Usage(os.Args[1:])
-		os.Exit(2)
-	}
+	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	opts := &pinkie.Options{
 		AlgoliaAPIKey:        os.Getenv("ALGOLIA_API_KEY"),
@@ -47,16 +44,27 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for _, channel := range *channels {
-		count, err := c.Crawl(channel, *all)
-		if err != nil {
-			log.Printf("error: %v", err)
-		}
+	var wg sync.WaitGroup
 
-		if count > 0 {
-			log.Printf("Successfully indexed %d videos.", count)
-		} else {
-			log.Print("Skipped index because there is no videos")
-		}
+	count := 0
+	for _, channel := range *channels {
+		wg.Add(1)
+
+		go func(channel string) {
+			res, err := c.Crawl(channel, *all)
+			if err != nil {
+				log.Printf("error: %v", err)
+			}
+
+			for _, batchRes := range res.Responses {
+				count += len(batchRes.ObjectIDs)
+			}
+
+			wg.Done()
+		}(channel)
 	}
+
+	wg.Wait()
+
+	log.Printf("Successfully indexed %d videos.", count)
 }
