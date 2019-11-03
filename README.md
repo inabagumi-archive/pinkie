@@ -5,8 +5,9 @@
 ## Installation
 
 ```console
+$ export PINKIE_VERSION=3.2.0
 $ cd $(mktemp -d)
-$ curl -sSL https://github.com/inabagumi/pinkie/releases/download/v3.1.4/ytc_3.1.4_Linux_x86_64.tar.gz | tar xzf -
+$ curl -sSL https://github.com/inabagumi/pinkie/releases/download/v${PINKIE_VERSION}/ytc_${PINKIE_VERSION}_Linux_x86_64.tar.gz | tar xzf -
 $ sudo install pinkie /usr/local/bin
 ```
 
