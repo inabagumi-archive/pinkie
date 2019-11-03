@@ -39,15 +39,19 @@ func New(opts *Options) (*Client, error) {
 	return c, nil
 }
 
+func (c *Client) Scrape(channelID string, opts *scraper.ScrapeOptions) interface{} {
+	return c.Scraper.Scrape(channelID, opts)
+}
+
 func (c *Client) Crawl(channelID string, all bool) (algolia.GroupBatchRes, error) {
 	opts := &scraper.ScrapeOptions{
 		All:             all,
 		PublishedBefore: time.Now(),
 	}
 
-	videos := c.Scraper.Scrape(channelID, opts)
+	results := c.Scrape(channelID, opts)
 
-	res, err := c.Index.SaveObjects(videos)
+	res, err := c.Index.SaveObjects(results)
 	if err != nil {
 		return algolia.GroupBatchRes{}, err
 	}
