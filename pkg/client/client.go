@@ -1,6 +1,8 @@
 package client
 
 import (
+	"log"
+	"sync"
 	"time"
 
 	algolia "github.com/algolia/algoliasearch-client-go/algolia/search"
@@ -51,4 +53,31 @@ func (c *Client) Crawl(channelID string, all bool) (algolia.GroupBatchRes, error
 	}
 
 	return res, nil
+}
+
+func (c *Client) Run(channels []string, all bool) {
+	var wg sync.WaitGroup
+
+	count := 0
+	for _, channel := range channels {
+		wg.Add(1)
+
+		go func(channel string) {
+			defer wg.Done()
+
+			res, err := c.Crawl(channel, all)
+			if err != nil {
+				log.Printf("error: %v", err)
+				return
+			}
+
+			for _, batchRes := range res.Responses {
+				count += len(batchRes.ObjectIDs)
+			}
+		}(channel)
+	}
+
+	wg.Wait()
+
+	log.Printf("Successfully indexed %d videos.", count)
 }

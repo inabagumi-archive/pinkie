@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"sync"
 
 	pinkie "github.com/inabagumi/pinkie/pkg/client"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -44,28 +43,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var wg sync.WaitGroup
-
-	count := 0
-	for _, channel := range *channels {
-		wg.Add(1)
-
-		go func(channel string) {
-			defer wg.Done()
-
-			res, err := c.Crawl(channel, *all)
-			if err != nil {
-				log.Printf("error: %v", err)
-				return
-			}
-
-			for _, batchRes := range res.Responses {
-				count += len(batchRes.ObjectIDs)
-			}
-		}(channel)
-	}
-
-	wg.Wait()
-
-	log.Printf("Successfully indexed %d videos.", count)
+	c.Run(*channels, *all)
 }
