@@ -15,6 +15,7 @@ type Channel struct {
 
 type Video struct {
 	Channel     *Channel `json:"channel"`
+	Duration    string   `json:"duration"`
 	ID          string   `json:"id"`
 	ObjectID    string   `json:"objectID"`
 	PublishedAt int64    `json:"publishedAt"`
@@ -46,6 +47,7 @@ func normalize(item *youtube.Video) *Video {
 
 	video := &Video{
 		Channel:     channel,
+		Duration:    item.ContentDetails.Duration,
 		ID:          item.Id,
 		ObjectID:    item.Id,
 		PublishedAt: publishedAt.Unix(),

@@ -64,7 +64,7 @@ func (s *Scraper) getVideoList(ids []string) (*youtube.VideoListResponse, error)
 	}
 
 	call := s.service.Videos.
-		List("liveStreamingDetails,snippet").
+		List("contentDetails,liveStreamingDetails,snippet").
 		Id(strIds).
 		MaxResults(50)
 
