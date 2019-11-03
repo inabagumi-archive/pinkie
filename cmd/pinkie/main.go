@@ -56,6 +56,7 @@ func main() {
 			res, err := c.Crawl(channel, *all)
 			if err != nil {
 				log.Printf("error: %v", err)
+				return
 			}
 
 			for _, batchRes := range res.Responses {
