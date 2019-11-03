@@ -12,10 +12,10 @@ import (
 func TestScraper_Scrape(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "testdata/search.json")
+		http.ServeFile(w, r, "../../test/testdata/search.json")
 	})
 	mux.HandleFunc("/videos", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "testdata/videos.json")
+		http.ServeFile(w, r, "../../test/testdata/videos.json")
 	})
 	server := httptest.NewServer(mux)
 	defer server.Close()
