@@ -1,6 +1,7 @@
 package scraper
 
 import (
+	"fmt"
 	"html"
 	"time"
 
@@ -42,7 +43,7 @@ func normalize(item *youtube.Video) *Video {
 	channel := &Channel{
 		ID:    item.Snippet.ChannelId,
 		Title: item.Snippet.ChannelTitle,
-		URL:   "https://www.youtube.com/channel/" + item.Snippet.ChannelId,
+		URL:   fmt.Sprintf("https://www.youtube.com/channel/%s", item.Snippet.ChannelId),
 	}
 
 	video := &Video{
@@ -52,7 +53,7 @@ func normalize(item *youtube.Video) *Video {
 		ObjectID:    item.Id,
 		PublishedAt: publishedAt.Unix(),
 		Title:       html.UnescapeString(item.Snippet.Title),
-		URL:         "https://www.youtube.com/watch?v=" + item.Id,
+		URL:         fmt.Sprintf("https://www.youtube.com/watch?v=%s", item.Id),
 	}
 
 	return video
