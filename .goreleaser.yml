@@ -24,9 +24,6 @@ dockers:
   - "inabagumi/{{ .ProjectName }}:latest"
   - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
   - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
-  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}-cli:latest"
-  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}-cli:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
-  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}-cli:{{ .Major }}.{{ .Minor }}"
   dockerfile: Dockerfile
 archives:
 - replacements:
