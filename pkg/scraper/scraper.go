@@ -27,12 +27,13 @@ func New(opts ...option.ClientOption) (*Scraper, error) {
 }
 
 type searchOptions struct {
+	days            int
 	pageToken       string
 	publishedBefore time.Time
 }
 
 func (s *Scraper) search(channelID string, opts *searchOptions) (*youtube.SearchListResponse, error) {
-	publishedAfter := opts.publishedBefore.AddDate(0, 0, -60)
+	publishedAfter := opts.publishedBefore.AddDate(0, 0, -opts.days)
 
 	call := s.service.Search.
 		List("id").
@@ -83,16 +84,22 @@ type ScrapeOptions struct {
 
 func (s *Scraper) Scrape(channelID string, opts *ScrapeOptions) []*Video {
 	var (
+		days      = 7
 		date      = opts.PublishedBefore
 		pageToken = ""
 		results   []*Video
 	)
+
+	if opts.All {
+		days = 60
+	}
 
 	for {
 		log.Printf(`channel_id: "%s", published_before: "%s", page_token: "%s"`,
 			channelID, date.Format(time.RFC3339), pageToken)
 
 		searchOpts := &searchOptions{
+			days:            days,
 			pageToken:       pageToken,
 			publishedBefore: date,
 		}
@@ -125,7 +132,7 @@ func (s *Scraper) Scrape(channelID string, opts *ScrapeOptions) []*Video {
 		pageToken = searchRes.NextPageToken
 
 		if pageToken == "" {
-			date = date.AddDate(0, 0, -61)
+			date = date.AddDate(0, 0, -days-1)
 		}
 	}
 
