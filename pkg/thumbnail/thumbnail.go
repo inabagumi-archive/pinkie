@@ -3,9 +3,9 @@ package thumbnail
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"image"
 	"image/jpeg"
-	"io/ioutil"
 	"net/http"
 
 	"golang.org/x/image/draw"
@@ -26,6 +26,10 @@ func New(id string, size string) (*Thumbnail, error) {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode != 200 {
+		return nil, fmt.Errorf("thumbnail: invalid status %d", res.StatusCode)
+	}
+
 	img, _, err := image.Decode(res.Body)
 	if err != nil {
 		return nil, err
@@ -40,19 +44,13 @@ func New(id string, size string) (*Thumbnail, error) {
 	draw.BiLinear.Scale(newImg, newImg.Bounds(), img, bounds, draw.Over, nil)
 
 	buf := bytes.NewBuffer(nil)
-	encoder := base64.NewEncoder(base64.StdEncoding, buf)
-	defer encoder.Close()
-
-	err = jpeg.Encode(encoder, newImg, &jpeg.Options{Quality: 70})
+	err = jpeg.Encode(buf, newImg, &jpeg.Options{Quality: 70})
 	if err != nil {
 		return nil, err
 	}
 
-	bytes, err := ioutil.ReadAll(buf)
-	if err != nil {
-		return nil, err
-	}
-	preSrc := "data:image/jpeg;base64," + string(bytes)
+	data := base64.StdEncoding.EncodeToString(buf.Bytes())
+	preSrc := "data:image/jpeg;base64," + data
 
 	t := &Thumbnail{
 		Height: height,
