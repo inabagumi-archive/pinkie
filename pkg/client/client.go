@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	algolia "github.com/algolia/algoliasearch-client-go/algolia/search"
+	algolia "github.com/algolia/algoliasearch-client-go/v3/algolia/search"
 	"github.com/inabagumi/pinkie/pkg/scraper"
 	"google.golang.org/api/option"
 )
