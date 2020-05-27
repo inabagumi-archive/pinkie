@@ -18,27 +18,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Go 1.14
-      uses: actions/setup-go@v1
+    - uses: actions/setup-go@v1
       with:
         go-version: 1.14
       id: go
 
-    - uses: actions/cache@v1
+    - uses: actions/cache@v2
       with:
         path: ~/go/pkg/mod
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: |
           ${{ runner.os }}-go-
 
-    - name: Get dependencies
-      run: go mod download
+    - run: go mod download
 
-    - name: Build
-      run: make
+    - run: make
 
-    - name: Test
-      run: make test
+    - run: make test
 
     - uses: codecov/codecov-action@v1.0.3
       with:
