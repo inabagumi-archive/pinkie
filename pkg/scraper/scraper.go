@@ -3,6 +3,7 @@ package scraper
 import (
 	"context"
 	"log"
+	"sync"
 	"time"
 
 	"google.golang.org/api/option"
@@ -97,9 +98,25 @@ func (s *Scraper) scrape(channelID string, searchOpts *searchOptions) ([]*Video,
 	}
 
 	var results []*Video
+
+	var (
+		mux sync.Mutex
+		wg  sync.WaitGroup
+	)
+
 	for _, item := range res.Items {
-		results = append(results, normalize(item))
+		wg.Add(1)
+
+		go func(item *youtube.Video) {
+			defer wg.Done()
+
+			mux.Lock()
+			results = append(results, normalize(item))
+			mux.Unlock()
+		}(item)
 	}
+
+	wg.Wait()
 
 	return results, searchRes.NextPageToken, nil
 }
