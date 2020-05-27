@@ -110,12 +110,12 @@ func (s *Scraper) scrape(channelID string, searchOpts *searchOptions) ([]*Video,
 		go func(item *youtube.Video) {
 			defer wg.Done()
 
-			item = normalize(item)
+			v := normalize(item)
 
 			mux.Lock()
 			defer mux.Unlock()
 
-			results = append(results, item)
+			results = append(results, v)
 		}(item)
 	}
 
