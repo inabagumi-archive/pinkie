@@ -6,57 +6,30 @@ import (
 	"time"
 
 	algolia "github.com/algolia/algoliasearch-client-go/v3/algolia/search"
+	"github.com/inabagumi/pinkie/pkg/crawler"
 	"github.com/inabagumi/pinkie/pkg/scraper"
-	"google.golang.org/api/option"
 )
 
 type Client struct {
-	Index   *algolia.Index
-	Scraper *scraper.Scraper
+	crawler *crawler.Crawler
 }
 
-type Options struct {
-	AlgoliaAPIKey        string
-	AlgoliaApplicationID string
-	AlgoliaIndexName     string
-	GoogleAPIKey         string
-}
-
-func New(opts *Options) (*Client, error) {
-	scraper, err := scraper.New(option.WithAPIKey(opts.GoogleAPIKey))
+func New(opts *crawler.Options) (*Client, error) {
+	crawler, err := crawler.New(opts)
 	if err != nil {
 		return nil, err
 	}
 
-	algoliaClient := algolia.NewClient(opts.AlgoliaApplicationID, opts.AlgoliaAPIKey)
-	index := algoliaClient.InitIndex(opts.AlgoliaIndexName)
-
-	c := &Client{
-		Index:   index,
-		Scraper: scraper,
-	}
-
-	return c, nil
-}
-
-func (c *Client) Scrape(channelID string, opts *scraper.ScrapeOptions) interface{} {
-	return c.Scraper.Scrape(channelID, opts)
+	return &Client{crawler: crawler}, nil
 }
 
 func (c *Client) Crawl(channelID string, all bool) (algolia.GroupBatchRes, error) {
 	opts := &scraper.ScrapeOptions{
-		All:             all,
-		PublishedBefore: time.Now(),
+		All:   all,
+		Until: time.Now(),
 	}
 
-	results := c.Scrape(channelID, opts)
-
-	res, err := c.Index.SaveObjects(results)
-	if err != nil {
-		return algolia.GroupBatchRes{}, err
-	}
-
-	return res, nil
+	return c.crawler.Crawl(channelID, opts)
 }
 
 func (c *Client) Run(channels []string, all bool) {
