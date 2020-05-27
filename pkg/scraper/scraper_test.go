@@ -26,8 +26,8 @@ func TestScraper_Scrape(t *testing.T) {
 	}
 
 	opts := &ScrapeOptions{
-		All:             false,
-		PublishedBefore: time.Date(2019, time.October, 31, 8, 0, 0, 0, time.UTC),
+		All:   false,
+		Until: time.Date(2019, time.October, 31, 8, 0, 0, 0, time.UTC),
 	}
 
 	results := scraper.Scrape("UC0Owc36U9lOyi9Gx9Ic-4qg", opts)

@@ -27,22 +27,22 @@ func New(opts ...option.ClientOption) (*Scraper, error) {
 }
 
 type searchOptions struct {
-	days            int
-	pageToken       string
-	publishedBefore time.Time
+	duration time.Duration
+	token    string
+	until    time.Time
 }
 
 func (s *Scraper) search(channelID string, opts *searchOptions) (*youtube.SearchListResponse, error) {
-	publishedAfter := opts.publishedBefore.AddDate(0, 0, -opts.days)
+	since := opts.until.Add(-opts.duration)
 
 	call := s.service.Search.
 		List("id").
 		ChannelId(channelID).
 		MaxResults(50).
 		Order("date").
-		PageToken(opts.pageToken).
-		PublishedAfter(publishedAfter.Format(time.RFC3339)).
-		PublishedBefore(opts.publishedBefore.Format(time.RFC3339)).
+		PageToken(opts.token).
+		PublishedAfter(since.Format(time.RFC3339)).
+		PublishedBefore(opts.until.Format(time.RFC3339)).
 		SafeSearch("none").
 		Type("video")
 
@@ -77,62 +77,74 @@ func (s *Scraper) getVideoList(ids []string) (*youtube.VideoListResponse, error)
 	return res, nil
 }
 
+func (s *Scraper) scrape(channelID string, searchOpts *searchOptions) ([]*Video, string, error) {
+	log.Printf(`channel_id: "%s", published_before: "%s", page_token: "%s"`,
+		channelID, searchOpts.until.Format(time.RFC3339), searchOpts.token)
+
+	searchRes, err := s.search(channelID, searchOpts)
+	if err != nil {
+		return nil, "", err
+	}
+
+	var ids []string
+	for _, item := range searchRes.Items {
+		ids = append(ids, item.Id.VideoId)
+	}
+
+	res, err := s.getVideoList(ids)
+	if err != nil {
+		return nil, "", err
+	}
+
+	var results []*Video
+	for _, item := range res.Items {
+		results = append(results, normalize(item))
+	}
+
+	return results, searchRes.NextPageToken, nil
+}
+
 type ScrapeOptions struct {
-	All             bool
-	PublishedBefore time.Time
+	All   bool
+	Until time.Time
 }
 
 func (s *Scraper) Scrape(channelID string, opts *ScrapeOptions) []*Video {
 	var (
-		days      = 7
-		date      = opts.PublishedBefore
-		pageToken = ""
-		results   []*Video
+		days    = 7 * 24 * time.Hour
+		date    = opts.Until
+		token   = ""
+		results []*Video
 	)
 
 	if opts.All {
-		days = 60
+		days = 60 * 24 * time.Hour
 	}
 
 	for {
-		log.Printf(`channel_id: "%s", published_before: "%s", page_token: "%s"`,
-			channelID, date.Format(time.RFC3339), pageToken)
-
 		searchOpts := &searchOptions{
-			days:            days,
-			pageToken:       pageToken,
-			publishedBefore: date,
+			duration: days,
+			token:    token,
+			until:    date,
 		}
-
-		searchRes, err := s.search(channelID, searchOpts)
+		items, nextToken, err := s.scrape(channelID, searchOpts)
 		if err != nil {
 			log.Printf("error: %v", err)
 			break
 		}
 
-		var ids []string
-		for _, item := range searchRes.Items {
-			ids = append(ids, item.Id.VideoId)
+		for _, item := range items {
+			results = append(results, item)
 		}
 
-		res, err := s.getVideoList(ids)
-		if err != nil {
-			log.Printf("error: %v", err)
+		if !opts.All || (token == "" && len(items) < 1) {
 			break
 		}
 
-		for _, item := range res.Items {
-			results = append(results, normalize(item))
-		}
+		token = nextToken
 
-		if !opts.All || (pageToken == "" && len(searchRes.Items) < 1) {
-			break
-		}
-
-		pageToken = searchRes.NextPageToken
-
-		if pageToken == "" {
-			date = date.AddDate(0, 0, -days-1)
+		if nextToken == "" {
+			date = date.Add(-days - 1*time.Second)
 		}
 	}
 

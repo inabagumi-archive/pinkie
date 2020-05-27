@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	pinkie "github.com/inabagumi/pinkie/pkg/client"
+	"github.com/inabagumi/pinkie/pkg/crawler"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -31,7 +32,7 @@ func main() {
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
-	opts := &pinkie.Options{
+	opts := &crawler.Options{
 		AlgoliaAPIKey:        os.Getenv("ALGOLIA_API_KEY"),
 		AlgoliaApplicationID: os.Getenv("ALGOLIA_APPLICATION_ID"),
 		AlgoliaIndexName:     os.Getenv("ALGOLIA_INDEX_NAME"),
