@@ -1,4 +1,4 @@
-package scraper
+package video
 
 import (
 	"fmt"
@@ -21,12 +21,12 @@ type Video struct {
 	ID          string               `json:"id"`
 	ObjectID    string               `json:"objectID"`
 	PublishedAt int64                `json:"publishedAt"`
-	Thumbnail   *thumbnail.Thumbnail `json:"thumbnail"`
+	Thumbnail   *thumbnail.Thumbnail `json:"thumbnail,omitempty"`
 	Title       string               `json:"title"`
 	URL         string               `json:"url"`
 }
 
-func normalize(item *youtube.Video) *Video {
+func New(item *youtube.Video) *Video {
 	rawPublishedAt := item.Snippet.PublishedAt
 
 	if item.LiveStreamingDetails != nil {
