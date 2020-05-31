@@ -1,4 +1,4 @@
-module github.com/inabagumi/pinkie
+module github.com/inabagumi/pinkie/v4
 
 go 1.14
 

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	algolia "github.com/algolia/algoliasearch-client-go/v3/algolia/search"
-	"github.com/inabagumi/pinkie/pkg/crawler"
-	"github.com/inabagumi/pinkie/pkg/scraper"
+	"github.com/inabagumi/pinkie/v4/pkg/crawler"
+	"github.com/inabagumi/pinkie/v4/pkg/scraper"
 )
 
 type Client struct {

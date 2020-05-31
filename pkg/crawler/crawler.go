@@ -2,7 +2,7 @@ package crawler
 
 import (
 	algolia "github.com/algolia/algoliasearch-client-go/v3/algolia/search"
-	"github.com/inabagumi/pinkie/pkg/scraper"
+	"github.com/inabagumi/pinkie/v4/pkg/scraper"
 	"google.golang.org/api/option"
 )
 
