@@ -1,32 +1,25 @@
-package video
+package scraper
 
 import (
 	"fmt"
 	"html"
 	"time"
 
-	"github.com/inabagumi/pinkie/pkg/thumbnail"
 	"google.golang.org/api/youtube/v3"
 )
 
-type Channel struct {
-	ID    string `json:"id"`
-	Title string `json:"title"`
-	URL   string `json:"url"`
-}
-
 type Video struct {
-	Channel     *Channel             `json:"channel"`
-	Duration    string               `json:"duration"`
-	ID          string               `json:"id"`
-	ObjectID    string               `json:"objectID"`
-	PublishedAt int64                `json:"publishedAt"`
-	Thumbnail   *thumbnail.Thumbnail `json:"thumbnail,omitempty"`
-	Title       string               `json:"title"`
-	URL         string               `json:"url"`
+	Channel     *Channel   `json:"channel"`
+	Duration    string     `json:"duration"`
+	ID          string     `json:"id"`
+	ObjectID    string     `json:"objectID"`
+	PublishedAt int64      `json:"publishedAt"`
+	Thumbnail   *Thumbnail `json:"thumbnail,omitempty"`
+	Title       string     `json:"title"`
+	URL         string     `json:"url"`
 }
 
-func New(item *youtube.Video) *Video {
+func NewVideo(item *youtube.Video) *Video {
 	rawPublishedAt := item.Snippet.PublishedAt
 
 	if item.LiveStreamingDetails != nil {
@@ -48,9 +41,11 @@ func New(item *youtube.Video) *Video {
 		URL:   fmt.Sprintf("https://www.youtube.com/channel/%s", item.Snippet.ChannelId),
 	}
 
-	t, err := thumbnail.New(item.Id, "maxres")
+	b := fmt.Sprintf("https://i.ytimg.com/vi/%s/maxresdefault.jpg", item.Id)
+
+	t, err := NewThumbnail(b + "maxresdefault.jpg")
 	if t == nil {
-		t, _ = thumbnail.New(item.Id, "hq")
+		t, _ = NewThumbnail(b + "https://i.ytimg.com/vi/%s/hqdefault.jpg")
 	}
 
 	video := &Video{

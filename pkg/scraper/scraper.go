@@ -6,7 +6,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/inabagumi/pinkie/pkg/video"
 	"google.golang.org/api/option"
 	"google.golang.org/api/youtube/v3"
 )
@@ -79,7 +78,7 @@ func (s *Scraper) getVideoList(ids []string) (*youtube.VideoListResponse, error)
 	return res, nil
 }
 
-func (s *Scraper) scrape(channelID string, searchOpts *searchOptions) ([]*video.Video, string, error) {
+func (s *Scraper) scrape(channelID string, searchOpts *searchOptions) ([]*Video, string, error) {
 	log.Printf(`channel_id: "%s", published_before: "%s", page_token: "%s"`,
 		channelID, searchOpts.until.Format(time.RFC3339), searchOpts.token)
 
@@ -98,7 +97,7 @@ func (s *Scraper) scrape(channelID string, searchOpts *searchOptions) ([]*video.
 		return nil, "", err
 	}
 
-	var results []*video.Video
+	var results []*Video
 
 	var (
 		mux sync.Mutex
@@ -111,7 +110,7 @@ func (s *Scraper) scrape(channelID string, searchOpts *searchOptions) ([]*video.
 		go func(item *youtube.Video) {
 			defer wg.Done()
 
-			v := video.New(item)
+			v := NewVideo(item)
 
 			mux.Lock()
 			defer mux.Unlock()
@@ -130,12 +129,12 @@ type ScrapeOptions struct {
 	Until time.Time
 }
 
-func (s *Scraper) Scrape(channelID string, opts *ScrapeOptions) []*video.Video {
+func (s *Scraper) Scrape(channelID string, opts *ScrapeOptions) []*Video {
 	var (
 		days    = 7 * 24 * time.Hour
 		date    = opts.Until
 		token   = ""
-		results []*video.Video
+		results []*Video
 	)
 
 	if opts.All {

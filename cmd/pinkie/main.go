@@ -5,8 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	pinkie "github.com/inabagumi/pinkie/pkg/client"
-	"github.com/inabagumi/pinkie/pkg/crawler"
+	pinkie "github.com/inabagumi/pinkie/v4/pkg/client"
+	"github.com/inabagumi/pinkie/v4/pkg/crawler"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
