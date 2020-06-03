@@ -41,11 +41,11 @@ func NewVideo(item *youtube.Video) *Video {
 		URL:   fmt.Sprintf("https://www.youtube.com/channel/%s", item.Snippet.ChannelId),
 	}
 
-	b := fmt.Sprintf("https://i.ytimg.com/vi/%s/maxresdefault.jpg", item.Id)
+	b := fmt.Sprintf("https://i.ytimg.com/vi/%s/", item.Id)
 
 	t, err := NewThumbnail(b + "maxresdefault.jpg")
 	if t == nil {
-		t, _ = NewThumbnail(b + "https://i.ytimg.com/vi/%s/hqdefault.jpg")
+		t, _ = NewThumbnail(b + "hqdefault.jpg")
 	}
 
 	video := &Video{
