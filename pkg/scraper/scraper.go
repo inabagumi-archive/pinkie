@@ -37,7 +37,7 @@ func (s *Scraper) search(channelID string, opts *searchOptions) (*youtube.Search
 	since := opts.until.Add(-opts.duration)
 
 	call := s.service.Search.
-		List("id").
+		List([]string{"id"}).
 		ChannelId(channelID).
 		MaxResults(50).
 		Order("date").
@@ -66,7 +66,7 @@ func (s *Scraper) getVideoList(ids []string) (*youtube.VideoListResponse, error)
 	}
 
 	call := s.service.Videos.
-		List("contentDetails,liveStreamingDetails,snippet").
+		List([]string{"contentDetails", "liveStreamingDetails", "snippet"}).
 		Id(strIds).
 		MaxResults(50)
 
