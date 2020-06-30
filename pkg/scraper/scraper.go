@@ -131,7 +131,7 @@ type ScrapeOptions struct {
 
 func (s *Scraper) Scrape(channelID string, opts *ScrapeOptions) []*Video {
 	var (
-		days    = 7 * 24 * time.Hour
+		days    = 3 * 24 * time.Hour
 		date    = opts.Until
 		token   = ""
 		results []*Video
