@@ -1,6 +1,6 @@
 # Pinkie
 
-[![GitHub Actions](https://github.com/inabagumi/pinkie/workflows/Go/badge.svg)](https://github.com/inabagumi/pinkie/actions?query=workflow%3AGo) [![Codecov](https://codecov.io/gh/inabagumi/pinkie/branch/trunk/graph/badge.svg)](https://codecov.io/gh/inabagumi/pinkie)
+[![GitHub Actions](https://github.com/inabagumi/pinkie/workflows/Go/badge.svg)](https://github.com/inabagumi/pinkie/actions?query=workflow%3AGo) [![Codecov](https://codecov.io/gh/inabagumi/pinkie/branch/main/graph/badge.svg)](https://codecov.io/gh/inabagumi/pinkie)
 
 ## Usage
 
