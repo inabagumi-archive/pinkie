@@ -4,33 +4,44 @@ before:
   hooks:
   - go mod download
 builds:
-- main: ./cmd/pinkie/main.go
-  binary: pinkie
+- binary: pinkie
   env:
   - CGO_ENABLED=0
-  goos:
-  - darwin
-  - linux
   goarch:
   - 386
   - amd64
+  goos:
+  - darwin
+  - linux
   ignore:
-  - goos: darwin
-    goarch: 386
+  - goarch: 386
+    goos: darwin
+  main: ./cmd/pinkie/main.go
 dockers:
 - binaries:
   - pinkie
+  build_flag_templates:
+  - '--pull'
+  - '--label=org.opencontainers.image.authors=Haneru Developers'
+  - '--label=org.opencontainers.image.created={{.Date}}'
+  - '--label=org.opencontainers.image.description=Enjoyment to be watched by you.'
+  - '--label=org.opencontainers.image.licenses=MIT'
+  - '--label=org.opencontainers.image.revision={{.FullCommit}}'
+  - '--label=org.opencontainers.image.source={{.GitURL}}'
+  - '--label=org.opencontainers.image.title={{.ProjectName}}'
+  - '--label=org.opencontainers.image.url=https://github.com/inabagumi/pinkie'
+  - '--label=org.opencontainers.image.version={{.Version}}'
+  dockerfile: Dockerfile
   image_templates:
   - "inabagumi/{{ .ProjectName }}:latest"
-  - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
-  - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
-  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:latest"
-  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
-  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
   - "ghcr.io/inabagumi/{{ .ProjectName }}:latest"
+  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:latest"
+  - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
   - "ghcr.io/inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+  - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
   - "ghcr.io/inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
-  dockerfile: Dockerfile
+  - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
 archives:
 - replacements:
     darwin: Darwin
