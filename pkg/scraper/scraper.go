@@ -105,18 +105,20 @@ func (s *Scraper) scrape(channelID string, searchOpts *searchOptions) ([]*Video,
 	)
 
 	for _, item := range res.Items {
-		wg.Add(1)
+		if item.Snippet.ChannelId == channelID {
+			wg.Add(1)
 
-		go func(item *youtube.Video) {
-			defer wg.Done()
+			go func(item *youtube.Video) {
+				defer wg.Done()
 
-			v := NewVideo(item)
+				v := NewVideo(item)
 
-			mux.Lock()
-			defer mux.Unlock()
+				mux.Lock()
+				defer mux.Unlock()
 
-			results = append(results, v)
-		}(item)
+				results = append(results, v)
+			}(item)
+		}
 	}
 
 	wg.Wait()
