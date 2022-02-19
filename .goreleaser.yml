@@ -18,9 +18,7 @@ builds:
     goos: darwin
   main: ./cmd/pinkie/main.go
 dockers:
-- binaries:
-  - pinkie
-  build_flag_templates:
+- build_flag_templates:
   - '--pull'
   - '--label=org.opencontainers.image.authors=Haneru Developers'
   - '--label=org.opencontainers.image.created={{.Date}}'
