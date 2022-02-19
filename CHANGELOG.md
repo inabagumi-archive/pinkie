@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.2.5](https://github.com/inabagumi/pinkie/compare/v4.2.4...v4.2.5) (2022-02-19)
+
+
+### Bug Fixes
+
+* **goreleaser:** use goreleaser v1.15 ([#219](https://github.com/inabagumi/pinkie/issues/219)) ([d830702](https://github.com/inabagumi/pinkie/commit/d8307029ffa79cb2b70f6cea511a63ef3e4988ae))
+
 ### [4.2.4](https://github.com/inabagumi/pinkie/compare/v4.2.3...v4.2.4) (2022-02-19)
 
 
