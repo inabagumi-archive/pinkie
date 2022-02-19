@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.2.2](https://github.com/inabagumi/pinkie/compare/v4.2.1...v4.2.2) (2022-02-19)
+
+
+### Bug Fixes
+
+* **github-actions:** fix password ([#211](https://github.com/inabagumi/pinkie/issues/211)) ([56cf750](https://github.com/inabagumi/pinkie/commit/56cf75077a5dbe75f5e1d4a667b46d5486b8d679))
+
 ### [4.2.1](https://github.com/inabagumi/pinkie/compare/v4.2.0...v4.2.1) (2022-02-19)
 
 
