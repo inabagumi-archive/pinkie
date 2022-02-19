@@ -1,5 +1,12 @@
 # Changelog
 
+### [4.2.4](https://github.com/inabagumi/pinkie/compare/v4.2.3...v4.2.4) (2022-02-19)
+
+
+### Bug Fixes
+
+* **release-please:** re-add actions token ([#217](https://github.com/inabagumi/pinkie/issues/217)) ([f5f609c](https://github.com/inabagumi/pinkie/commit/f5f609cc5d860d1734fc9104414aa1c84827550e))
+
 ### [4.2.3](https://github.com/inabagumi/pinkie/compare/v4.2.2...v4.2.3) (2022-02-19)
 
 
