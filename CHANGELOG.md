@@ -1,5 +1,14 @@
 # Changelog
 
+### [4.2.3](https://github.com/inabagumi/pinkie/compare/v4.2.2...v4.2.3) (2022-02-19)
+
+
+### Bug Fixes
+
+* **github-actions:** use github token ([#213](https://github.com/inabagumi/pinkie/issues/213)) ([b00630f](https://github.com/inabagumi/pinkie/commit/b00630feefa4ae1687fa6b91fb2aee1a09fbc468))
+* **release-please:** add permission ([#216](https://github.com/inabagumi/pinkie/issues/216)) ([bad1da8](https://github.com/inabagumi/pinkie/commit/bad1da8c8f94d3749eced04da7aff5154e9f2f13))
+* **release-please:** use github token ([#214](https://github.com/inabagumi/pinkie/issues/214)) ([23563ce](https://github.com/inabagumi/pinkie/commit/23563ce51af151ba27ceae067832af3a11716d23))
+
 ### [4.2.2](https://github.com/inabagumi/pinkie/compare/v4.2.1...v4.2.2) (2022-02-19)
 
 
