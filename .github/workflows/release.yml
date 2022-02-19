@@ -45,7 +45,7 @@ jobs:
         username: ${{ github.actor }}
     - uses: goreleaser/goreleaser-action@v2
       with:
-        version: latest
+        version: 1.5.0
         args: release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
