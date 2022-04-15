@@ -6,7 +6,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/algolia/algoliasearch-client-go/v3 v3.25.0
-	golang.org/x/image v0.0.0-20220412021310-99f80d0ecbab
+	golang.org/x/image v0.0.0-20220413100746-70e8d0d3baa9
 	google.golang.org/api v0.74.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
