@@ -32,18 +32,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go
         if: ${{ steps.release.outputs.release_created }}
-      - uses: docker/login-action@v1
+      - uses: docker/login-action@v2
         with:
           password: ${{ secrets.DOCKER_PASSWORD }}
           username: ${{ secrets.DOCKER_USERNAME }}
         if: ${{ steps.release.outputs.release_created }}
-      - uses: docker/login-action@v1
+      - uses: docker/login-action@v2
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
         if: ${{ steps.release.outputs.release_created }}
-      - uses: docker/login-action@v1
+      - uses: docker/login-action@v2
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
