@@ -10,50 +10,64 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
       packages: write
 
     steps:
-      - uses: google-github-actions/release-please-action@v3
-        id: release
+      - id: release
+        uses: google-github-actions/release-please-action@v3
         with:
-          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          release-type: go
           package-name: pinkie
-      - uses: actions/checkout@v3
-        if: ${{ steps.release.outputs.release_created }}
-      - uses: actions/setup-go@v3
+          release-type: go
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v3
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-go@v3
         with:
           go-version: 1.17
-        if: ${{ steps.release.outputs.release_created }}
-      - uses: actions/cache@v3
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: actions/cache@v3
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go
-        if: ${{ steps.release.outputs.release_created }}
-      - uses: docker/login-action@v2
+      - if: ${{ steps.release.outputs.release_created }}
+        id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          token_format: access_token
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: docker/login-action@v2
         with:
           password: ${{ secrets.DOCKER_PASSWORD }}
           username: ${{ secrets.DOCKER_USERNAME }}
-        if: ${{ steps.release.outputs.release_created }}
-      - uses: docker/login-action@v2
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: docker/login-action@v2
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
-        if: ${{ steps.release.outputs.release_created }}
-      - uses: docker/login-action@v2
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: docker/login-action@v2
         with:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           username: ${{ github.actor }}
-        if: ${{ steps.release.outputs.release_created }}
-      - uses: goreleaser/goreleaser-action@v3
+      - if: ${{ steps.release.outputs.release_created }}
+        uses: docker/login-action@v2
         with:
-          version: 1.5.0
-          args: release
-        env:
+          password: ${{ steps.auth.outputs.access_token }}
+          registry: ${{ secrets.GOOGLE_REGION }}-docker.pkg.dev
+          username: oauth2accesstoken
+      - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+          GOOGLE_REGION: ${{ secrets.GOOGLE_REGION }}
         if: ${{ steps.release.outputs.release_created }}
-
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          args: release
+          version: 1.9.2

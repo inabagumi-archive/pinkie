@@ -34,12 +34,15 @@ dockers:
   - "inabagumi/{{ .ProjectName }}:latest"
   - "ghcr.io/inabagumi/{{ .ProjectName }}:latest"
   - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:latest"
+  - "{{ if index .Env "GOOGLE_REGION" }}{{ .Env.GOOGLE_REGION }}-docker.{{ end }}pkg.dev/{{ .Env.GOOGLE_PROJECT }}/containers/{{ .ProjectName }}:latest"
   - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
   - "ghcr.io/inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
   - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+  - "{{ if index .Env "GOOGLE_REGION" }}{{ .Env.GOOGLE_REGION }}-docker.{{ end }}pkg.dev/{{ .Env.GOOGLE_PROJECT }}/containers/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
   - "inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
   - "ghcr.io/inabagumi/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
   - "docker.pkg.github.com/inabagumi/pinkie/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
+  - "{{ if index .Env "GOOGLE_REGION" }}{{ .Env.GOOGLE_REGION }}-docker.{{ end }}pkg.dev/{{ .Env.GOOGLE_PROJECT }}/containers/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}"
 archives:
 - replacements:
     darwin: Darwin
