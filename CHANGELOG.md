@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.2](https://github.com/inabagumi/pinkie/compare/v4.3.1...v4.3.2) (2022-06-09)
+
+
+### Bug Fixes
+
+* **terraform:** fix invalid workload identity provider ([#255](https://github.com/inabagumi/pinkie/issues/255)) ([2cdfd97](https://github.com/inabagumi/pinkie/commit/2cdfd97e22630908e0dddc7c7067e76d99755230))
+
 ## [4.3.1](https://github.com/inabagumi/pinkie/compare/v4.3.0...v4.3.1) (2022-06-09)
 
 
