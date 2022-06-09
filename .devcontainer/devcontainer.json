@@ -1,0 +1,24 @@
+{
+  "extensions": [
+    "EditorConfig.EditorConfig",
+    "HashiCorp.terraform",
+    "golang.Go"
+  ],
+  "features": {
+    "terraform": {
+      "terragrunt": "none",
+      "tflint": "none",
+      "version": "1.2.2"
+    }
+  },
+  "forwardPorts": [],
+  "image": "mcr.microsoft.com/vscode/devcontainers/go:0-1.18-bullseye",
+  "name": "Pinkie",
+  "postCreateCommand": "go mod download",
+  "remoteUser": "vscode",
+  "settings": {
+    "go.toolsManagement.checkForUpdates": "local",
+    "go.useLanguageServer": true,
+    "go.gopath": "/go"
+  }
+}
