@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.1](https://github.com/inabagumi/pinkie/compare/v4.3.0...v4.3.1) (2022-06-09)
+
+
+### Bug Fixes
+
+* **github-actions:** add missing args ([#253](https://github.com/inabagumi/pinkie/issues/253)) ([897076a](https://github.com/inabagumi/pinkie/commit/897076a2591a0a8a3b1d73d5142dc73e21a6db9d))
+
 ## [4.3.0](https://github.com/inabagumi/pinkie/compare/v4.2.5...v4.3.0) (2022-06-09)
 
 
