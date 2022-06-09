@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.0](https://github.com/inabagumi/pinkie/compare/v4.2.5...v4.3.0) (2022-06-09)
+
+
+### Features
+
+* release to artifact registry ([#251](https://github.com/inabagumi/pinkie/issues/251)) ([c0fc07d](https://github.com/inabagumi/pinkie/commit/c0fc07d1567429e2987dd9bd310c36a6c3a6dd3d))
+
 ### [4.2.5](https://github.com/inabagumi/pinkie/compare/v4.2.4...v4.2.5) (2022-02-19)
 
 
