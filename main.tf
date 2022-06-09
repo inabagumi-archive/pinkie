@@ -32,6 +32,8 @@ provider "github" {
   owner = var.repo_owner
 }
 
+data "google_project" "project" {}
+
 resource "google_service_account" "gha" {
   account_id   = "github-actions"
   display_name = "Service Account for GitHub Actions"
@@ -94,4 +96,16 @@ resource "github_actions_secret" "region" {
   plaintext_value = var.region
   repository      = var.repo_name
   secret_name     = "GOOGLE_REGION"
+}
+
+resource "github_actions_secret" "service_account" {
+  plaintext_value = google_service_account.gha.email
+  repository      = var.repo_name
+  secret_name     = "GOOGLE_SERVICE_ACCOUNT"
+}
+
+resource "github_actions_secret" "workload_identity_provider" {
+  plaintext_value = "projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${module.gh_oidc.pool_name}/providers/${module.gh_oidc.provider_name}"
+  repository      = var.repo_name
+  secret_name     = "GOOGLE_WORKLOAD_IDENTITY_PROVIDER"
 }
