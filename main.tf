@@ -105,7 +105,7 @@ resource "github_actions_secret" "service_account" {
 }
 
 resource "github_actions_secret" "workload_identity_provider" {
-  plaintext_value = "projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${module.gh_oidc.pool_name}/providers/${module.gh_oidc.provider_name}"
+  plaintext_value = module.gh_oidc.provider_name
   repository      = var.repo_name
   secret_name     = "GOOGLE_WORKLOAD_IDENTITY_PROVIDER"
 }
