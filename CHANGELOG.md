@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.3](https://github.com/inabagumi/pinkie/compare/v4.3.2...v4.3.3) (2022-06-10)
+
+
+### Bug Fixes
+
+* **goreleaser:** escape quote ([#259](https://github.com/inabagumi/pinkie/issues/259)) ([2d47d7d](https://github.com/inabagumi/pinkie/commit/2d47d7d88790389a3ed7f41e52b15d90c3ab7a4d))
+* **terraform:** binding roles to service account for terraform ([#257](https://github.com/inabagumi/pinkie/issues/257)) ([40702b5](https://github.com/inabagumi/pinkie/commit/40702b5cc1f52a6038a18ca0a89fa2eaf5a321ec))
+
 ## [4.3.2](https://github.com/inabagumi/pinkie/compare/v4.3.1...v4.3.2) (2022-06-09)
 
 
