@@ -27,10 +27,12 @@ terraform {
 
 provider "google" {
   project = var.project
+  region  = var.region
 }
 
 provider "google-beta" {
   project = var.project
+  region  = var.region
 }
 
 provider "github" {
@@ -62,6 +64,12 @@ resource "google_project_iam_binding" "artifactregistry_admin" {
   members = ["serviceAccount:${google_service_account.terraform.email}"]
   project = var.project
   role    = "roles/artifactregistry.admin"
+}
+
+resource "google_project_iam_binding" "cloudscheduler_admin" {
+  members = ["serviceAccount:${google_service_account.terraform.email}"]
+  project = var.project
+  role    = "roles/cloudscheduler.admin"
 }
 
 resource "google_project_iam_binding" "resourcemanager_project_iam_admin" {
@@ -138,6 +146,7 @@ resource "google_artifact_registry_repository_iam_member" "gha" {
 resource "google_cloud_scheduler_job" "fetch" {
   attempt_deadline = "600s"
   name             = local.fetch_job_name
+  region           = var.region
   schedule         = "1-51/10 * * * *"
   time_zone        = "UTC"
 
