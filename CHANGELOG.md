@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.4](https://github.com/inabagumi/pinkie/compare/v4.3.3...v4.3.4) (2022-06-10)
+
+
+### Bug Fixes
+
+* **github-actions:** add `fetch-depth: 0` ([#260](https://github.com/inabagumi/pinkie/issues/260)) ([43dff01](https://github.com/inabagumi/pinkie/commit/43dff01dc0e023373a6d32a27bc66843a9becae7))
+
 ## [4.3.3](https://github.com/inabagumi/pinkie/compare/v4.3.2...v4.3.3) (2022-06-10)
 
 
