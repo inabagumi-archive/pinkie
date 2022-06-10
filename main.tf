@@ -85,12 +85,19 @@ resource "google_project_iam_binding" "run_invoker" {
 }
 
 resource "google_project_iam_binding" "iam_service_account_admin" {
-  members = [
-    "serviceAccount:${google_service_account.terraform.email}",
-    "serviceAccount:${google_service_account.gha.email}"
-  ]
+  members = ["serviceAccount:${google_service_account.terraform.email}"]
   project = var.project
   role    = "roles/iam.serviceAccountAdmin"
+}
+
+resource "google_project_iam_binding" "iam_service_account_user" {
+  members = [
+    "serviceAccount:${google_service_account.terraform.email}",
+    "serviceAccount:${google_service_account.gha.email}",
+    "serviceAccount:${google_service_account.pinkie.email}",
+  ]
+  project = var.project
+  role    = "roles/iam.serviceAccountUser"
 }
 
 resource "google_project_iam_binding" "iam_workload_identity_pool_admin" {
@@ -100,12 +107,6 @@ resource "google_project_iam_binding" "iam_workload_identity_pool_admin" {
   ]
   project = var.project
   role    = "roles/iam.workloadIdentityPoolAdmin"
-}
-
-resource "google_project_iam_binding" "iam_service_account_user" {
-  members = ["serviceAccount:${google_service_account.terraform.email}"]
-  project = var.project
-  role    = "roles/iam.serviceAccountUser"
 }
 
 module "gh_oidc" {
@@ -151,7 +152,7 @@ resource "google_cloud_scheduler_job" "fetch" {
   time_zone        = "UTC"
 
   http_target {
-    http_method = "GET"
+    http_method = "POST"
     uri         = "https://${var.region}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${var.project}/jobs/${local.fetch_job_name}:run"
 
     oauth_token {
