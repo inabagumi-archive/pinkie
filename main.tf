@@ -66,6 +66,12 @@ resource "google_project_iam_binding" "artifactregistry_admin" {
   role    = "roles/artifactregistry.admin"
 }
 
+resource "google_project_iam_binding" "artifactregistry_writer" {
+  members = ["serviceAccount:${google_service_account.gha.email}"]
+  project = var.project
+  role    = "roles/artifactregistry.writer"
+}
+
 resource "google_project_iam_binding" "cloudscheduler_admin" {
   members = ["serviceAccount:${google_service_account.terraform.email}"]
   project = var.project
