@@ -37,6 +37,10 @@ provider "github" {
   owner = var.repo_owner
 }
 
+locals {
+  fetch_job_name = "fetch"
+}
+
 data "google_project" "project" {}
 
 resource "google_service_account" "terraform" {
@@ -49,6 +53,11 @@ resource "google_service_account" "gha" {
   display_name = "Service Account for GitHub Actions"
 }
 
+resource "google_service_account" "pinkie" {
+  account_id   = "pinkie"
+  display_name = "Service Account for Pinkie"
+}
+
 resource "google_project_iam_binding" "artifactregistry_admin" {
   members = ["serviceAccount:${google_service_account.terraform.email}"]
   project = var.project
@@ -59,6 +68,12 @@ resource "google_project_iam_binding" "resourcemanager_project_iam_admin" {
   members = ["serviceAccount:${google_service_account.terraform.email}"]
   project = var.project
   role    = "roles/resourcemanager.projectIamAdmin"
+}
+
+resource "google_project_iam_binding" "run_invoker" {
+  members = ["serviceAccount:${google_service_account.pinkie.email}"]
+  project = var.project
+  role    = "roles/run.invoker"
 }
 
 resource "google_project_iam_binding" "iam_service_account_admin" {
@@ -118,6 +133,26 @@ resource "google_artifact_registry_repository_iam_member" "gha" {
   project    = google_artifact_registry_repository.containers.project
   repository = google_artifact_registry_repository.containers.name
   role       = "roles/artifactregistry.writer"
+}
+
+resource "google_cloud_scheduler_job" "fetch" {
+  attempt_deadline = "600s"
+  name             = local.fetch_job_name
+  schedule         = "1-51/10 * * * *"
+  time_zone        = "UTC"
+
+  http_target {
+    http_method = "GET"
+    uri         = "https://${var.region}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${var.project}/jobs/${local.fetch_job_name}:run"
+
+    oauth_token {
+      service_account_email = google_service_account.pinkie.email
+    }
+  }
+
+  retry_config {
+    retry_count = 0
+  }
 }
 
 resource "github_actions_secret" "project" {
