@@ -66,12 +66,6 @@ resource "google_project_iam_binding" "artifactregistry_admin" {
   role    = "roles/artifactregistry.admin"
 }
 
-resource "google_project_iam_binding" "artifactregistry_writer" {
-  members = ["serviceAccount:${google_service_account.gha.email}"]
-  project = var.project
-  role    = "roles/artifactregistry.writer"
-}
-
 resource "google_project_iam_binding" "cloudscheduler_admin" {
   members = ["serviceAccount:${google_service_account.terraform.email}"]
   project = var.project
@@ -82,12 +76,6 @@ resource "google_project_iam_binding" "resourcemanager_project_iam_admin" {
   members = ["serviceAccount:${google_service_account.terraform.email}"]
   project = var.project
   role    = "roles/resourcemanager.projectIamAdmin"
-}
-
-resource "google_project_iam_binding" "run_invoker" {
-  members = ["serviceAccount:${google_service_account.pinkie.email}"]
-  project = var.project
-  role    = "roles/run.invoker"
 }
 
 resource "google_project_iam_binding" "iam_service_account_admin" {
@@ -148,6 +136,16 @@ resource "google_artifact_registry_repository_iam_member" "gha" {
   project    = google_artifact_registry_repository.containers.project
   repository = google_artifact_registry_repository.containers.name
   role       = "roles/artifactregistry.writer"
+}
+
+resource "google_artifact_registry_repository_iam_member" "reader" {
+  provider = google-beta
+
+  location   = google_artifact_registry_repository.containers.location
+  member     = "allUsers"
+  project    = google_artifact_registry_repository.containers.project
+  repository = google_artifact_registry_repository.containers.name
+  role       = "roles/artifactregistry.reader"
 }
 
 resource "google_cloud_scheduler_job" "fetch" {
