@@ -17,6 +17,11 @@ terraform {
       source  = "hashicorp/google-beta"
       version = "4.24.0"
     }
+
+    github = {
+      source  = "integrations/github"
+      version = "4.26.0"
+    }
   }
 }
 
@@ -34,21 +39,50 @@ provider "github" {
 
 data "google_project" "project" {}
 
+resource "google_service_account" "terraform" {
+  account_id   = "terraform"
+  display_name = "Serivce Account for Terraform"
+}
+
 resource "google_service_account" "gha" {
   account_id   = "github-actions"
   display_name = "Service Account for GitHub Actions"
 }
 
+resource "google_project_iam_binding" "artifactregistry_admin" {
+  members = ["serviceAccount:${google_service_account.terraform.email}"]
+  project = var.project
+  role    = "roles/artifactregistry.admin"
+}
+
+resource "google_project_iam_binding" "resourcemanager_project_iam_admin" {
+  members = ["serviceAccount:${google_service_account.terraform.email}"]
+  project = var.project
+  role    = "roles/resourcemanager.projectIamAdmin"
+}
+
+resource "google_project_iam_binding" "iam_service_account_admin" {
+  members = [
+    "serviceAccount:${google_service_account.terraform.email}",
+    "serviceAccount:${google_service_account.gha.email}"
+  ]
+  project = var.project
+  role    = "roles/iam.serviceAccountAdmin"
+}
+
 resource "google_project_iam_binding" "iam_workload_identity_pool_admin" {
-  members = ["serviceAccount:${google_service_account.gha.email}"]
+  members = [
+    "serviceAccount:${google_service_account.terraform.email}",
+    "serviceAccount:${google_service_account.gha.email}",
+  ]
   project = var.project
   role    = "roles/iam.workloadIdentityPoolAdmin"
 }
 
-resource "google_project_iam_binding" "iam_service_account_admin" {
-  members = ["serviceAccount:${google_service_account.gha.email}"]
+resource "google_project_iam_binding" "iam_service_account_user" {
+  members = ["serviceAccount:${google_service_account.terraform.email}"]
   project = var.project
-  role    = "roles/iam.serviceAccountAdmin"
+  role    = "roles/iam.serviceAccountUser"
 }
 
 module "gh_oidc" {
