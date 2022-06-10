@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.5](https://github.com/inabagumi/pinkie/compare/v4.3.4...v4.3.5) (2022-06-10)
+
+
+### Bug Fixes
+
+* **github-actions:** ignore `gha-creds-*.json` ([#262](https://github.com/inabagumi/pinkie/issues/262)) ([cdd8335](https://github.com/inabagumi/pinkie/commit/cdd8335d9cd4838a4f72819b0e229bc0bce1495f))
+
 ## [4.3.4](https://github.com/inabagumi/pinkie/compare/v4.3.3...v4.3.4) (2022-06-10)
 
 
