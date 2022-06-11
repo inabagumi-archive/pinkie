@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.3.6](https://github.com/inabagumi/pinkie/compare/v4.3.5...v4.3.6) (2022-06-11)
+
+
+### Bug Fixes
+
+* **terraform:** add missing role for gha ([#268](https://github.com/inabagumi/pinkie/issues/268)) ([0994ee6](https://github.com/inabagumi/pinkie/commit/0994ee65cd6f4d6785fc9dee92aa485221366fe7))
+* **terraform:** grant reader role to all users ([#269](https://github.com/inabagumi/pinkie/issues/269)) ([61e9504](https://github.com/inabagumi/pinkie/commit/61e9504f64517b4ff3fe5da19fbc89562183dd51))
+* **terraform:** use POST method ([#266](https://github.com/inabagumi/pinkie/issues/266)) ([2899d6f](https://github.com/inabagumi/pinkie/commit/2899d6fe7152598331b2c565423f5576302aefcd))
+
 ## [4.3.5](https://github.com/inabagumi/pinkie/compare/v4.3.4...v4.3.5) (2022-06-10)
 
 
