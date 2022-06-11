@@ -47,17 +47,23 @@ data "google_project" "project" {}
 
 resource "google_service_account" "terraform" {
   account_id   = "terraform"
-  display_name = "Serivce Account for Terraform"
+  description  = "Serivce Account for Terraform"
+  display_name = "Terraform"
+  project = var.project
 }
 
 resource "google_service_account" "gha" {
   account_id   = "github-actions"
-  display_name = "Service Account for GitHub Actions"
+  description  = "Service Account for GitHub Actions"
+  display_name = "GitHub Actions"
+  project = var.project
 }
 
 resource "google_service_account" "pinkie" {
   account_id   = "pinkie"
-  display_name = "Service Account for Pinkie"
+  description  = "Service Account for Pinkie"
+  display_name = "Pinkie"
+  project = var.project
 }
 
 resource "google_project_iam_binding" "artifactregistry_admin" {
@@ -151,6 +157,7 @@ resource "google_artifact_registry_repository_iam_member" "reader" {
 resource "google_cloud_scheduler_job" "fetch" {
   attempt_deadline = "600s"
   name             = local.fetch_job_name
+  project          = var.project
   region           = var.region
   schedule         = "1-51/10 * * * *"
   time_zone        = "UTC"
