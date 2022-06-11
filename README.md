@@ -5,12 +5,12 @@
 ## Usage
 
 ```console
-$ docker pull inabagumi/pinkie:latest
+$ docker pull ghcr.io/inabagumi/pinkie:latest
 $ echo GOOGLE_API_KEY=xxxxx >> .env
 $ echo ALGOLIA_APPLICATION_ID=xxxxx >> .env
 $ echo ALGOLIA_API_KEY=xxxxx >> .env
 $ echo ALGOLIA_INDEX_NAME=xxxxx >> .env
-$ docker run --env-file .env --rm inabagumi/pinkie:latest --channel UC0Owc36U9lOyi9Gx9Ic-4qg
+$ docker run --env-file .env --rm docker pull ghcr.io/inabagumi/pinkie:latest --channel UC0Owc36U9lOyi9Gx9Ic-4qg
 ```
 
 ## LICENSE
