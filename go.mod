@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/algolia/algoliasearch-client-go/v3 v3.26.0
-	golang.org/x/image v0.0.0-20220617043117-41969df76e82
+	golang.org/x/image v0.0.0-20220722155232-062f8c9fd539
 	google.golang.org/api v0.88.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
