@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/algolia/algoliasearch-client-go/v3 v3.26.1
 	golang.org/x/image v0.0.0-20220902085622-e7cb96979f69
-	google.golang.org/api v0.94.0
+	google.golang.org/api v0.95.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
 
