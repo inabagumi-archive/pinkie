@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/algolia/algoliasearch-client-go/v3 v3.26.1
 	golang.org/x/image v0.1.0
-	google.golang.org/api v0.100.0
+	google.golang.org/api v0.101.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
 
@@ -24,7 +24,7 @@ require (
 	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20221014213838-99cd37c6964a // indirect
+	google.golang.org/genproto v0.0.0-20221018160656-63c7b68cfc55 // indirect
 	google.golang.org/grpc v1.50.1 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )
