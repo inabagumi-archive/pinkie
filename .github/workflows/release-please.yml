@@ -71,7 +71,7 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
           GOOGLE_REGION: ${{ secrets.GOOGLE_REGION }}
         if: ${{ steps.release.outputs.release_created }}
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v4
         with:
           args: release
           version: 1.9.2
