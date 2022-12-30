@@ -111,7 +111,7 @@ resource "google_project_iam_binding" "iam_workload_identity_pool_admin" {
 
 module "gh_oidc" {
   source  = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  version = "3.1.0"
+  version = "3.1.1"
 
   pool_id               = "${var.repo_name}-pool"
   project_id            = var.project
